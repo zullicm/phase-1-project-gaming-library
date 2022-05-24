@@ -1,10 +1,15 @@
 
-
+// node getters
 const mainDiv = () => document.getElementById('main')
+const gameTab =  () => document.getElementById('gametab')
+const logo = () => document.getElementById('logo')
+const favoritesTab = () => document.getElementById("favorites")
+const generatorTab = () => document.getElementById("generator")
 
+// Page Renders
+// Home Page ---------------------------------------------------------------
 function renderHomePage(){
   resetMainDiv()
-  
   // h1 text
   const h1 = document.createElement('h1')
   h1.innerText = "Welcome!"
@@ -67,10 +72,59 @@ gameDiv.innerHTML = `
   mainDiv().appendChild(gameDiv)
 }
 
+// Game Tab ----------------------------------------------------------------
+function renderGameTab(){
+  resetMainDiv()
+
+  const h1 = document.createElement('h1')
+  h1.innerText = "TBD This is a test of rendering the games tab"
+  mainDiv().appendChild(h1)
+}
+
+// Favorites Tab -----------------------------------------------------------
+function renderFavoritesTab(){
+  resetMainDiv()
+
+  const h1 = document.createElement('h1')
+  h1.innerText = "TBD This is a test of rendering the favorites tab"
+  mainDiv().appendChild(h1)
+}
+
+// Generator Tab -----------------------------------------------------------
+function renderGeneratorTab(){
+  resetMainDiv()
+
+  const h1 = document.createElement('h1')
+  h1.innerText = "TBD This is a test of rendering the generator tab"
+  mainDiv().appendChild(h1)
+}
+
+// Page reset --------------------------------------------------------------
 function resetMainDiv(){
   mainDiv().innerHTML = ""
 }
 
+// EventListeners
+function attachLogoLink(){
+  logo().addEventListener("click", renderHomePage)
+}
+
+function attachGamesTabLink(){
+  gameTab().addEventListener("click", renderGameTab)
+}
+
+function attachFavoritesTabLink(){
+  favoritesTab().addEventListener("click", renderFavoritesTab)
+}
+
+function attachGeneratorTabLink(){
+  generatorTab().addEventListener("click", renderGeneratorTab)
+}
+
 document.addEventListener("DOMContentLoaded", ()=>{
   renderHomePage()
+  attachLogoLink()
+  attachGamesTabLink()
+  attachFavoritesTabLink()
+  attachGeneratorTabLink()
 })
