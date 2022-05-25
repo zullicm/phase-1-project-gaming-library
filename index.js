@@ -27,8 +27,26 @@ const generatorTab = () => document.getElementById("generator")
     .catch(err => console.error(err));
   }
   // Finish GET ------------------------------------------------------------
+  function fetchFavGames(){
+    fetch("http://localhost:3000/favorites")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      data.forEach(game => renderFavGameCard(game))
+    })
+  }
 
-  // GET Request (FAV) -----------------------------------------------------
+  // POST Request (FAV) -----------------------------------------------------
+  // function postFavoriteGame(gameOBJ){
+  //   fetch("http://localhost:3000/favorites",{
+  //     method:'POST',
+  //     headers:{
+  //       "Content-Type":'application/json',
+  //       "Accept": 'application/json'
+  //     },
+  //     body: JSON.stringify(gameOBJ)
+  //   })
+  // }
 
 // Page Renders
 // Home Page ---------------------------------------------------------------
@@ -55,7 +73,7 @@ function renderHomePage(){
   h3.style.borderBottomRightRadius = "25px"
   // h5 text
   const h5 = document.createElement('h5')
-  h5.innerText = "This website is just as the title says, a reposistory of free to play games (with a few added features!). Here on this website you can do a couple of things. We have a few tabs on the top right that all have different functions and below is an explination of each tab."
+  h5.innerText = "This website is just as the title says, a reposistory of free to play games (with a few added features!). Here on this website you can do a couple of things. We have a few tabs on the top right that all have different functions and below is an explanation of each tab."
   h5.style.paddingTop = "10px"
   h5.style.paddingBottom = "13px"
   h5.style.paddingBlock = "20px"
@@ -100,6 +118,7 @@ gameDiv.innerHTML = `
 function renderGameTab(){
   resetMainDiv()
   fetchFreeGames()
+  renderFavButton()
 }
 
 // Favorites Tab -----------------------------------------------------------
@@ -116,13 +135,28 @@ function renderGeneratorTab(){
   h1.innerText = "TBD This is a test of rendering the generator tab"
   mainDiv().appendChild(h1)
 }
-
+// Render fav button -------------------------------------------------------
+const renderFavButton = () =>{
+  
+  const form = document.createElement('form')
+  const favButton = document.createElement('button')
+  favButton.setAttribute('type', 'submit')  
+  const favoriteIcon = document.createElement('i')
+  favoriteIcon.classList.add("material-icons")
+  favoriteIcon.innerText = "add_circle_outline"
+  favButton.appendChild(favoriteIcon)
+  form.appendChild(favButton)
+  form.style.float = "right"
+  form.style.paddingRight = "5px"
+  form.style.paddingTop = "5px"
+  return form
+}
 // Game Card Render --------------------------------------------------------
 
 function renderGameCard(game){
+  const gameOBJ = game
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
-  mainCard.setAttribute('id',`${game.id}`)
 
   const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
@@ -145,20 +179,18 @@ function renderGameCard(game){
   <p>"${game.short_description}"</p>
   <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
+
   const favoriteText = document.createElement('p')
   favoriteText.innerText = "Favorite Game"
-  const favoriteButton = document.createElement('i')
-  favoriteButton.classList.add("material-icons")
-  favoriteButton.innerText = "add_circle_outline"
   favoriteText.style.float = "right"
-  favoriteButton.style.float = "right"
-  favoriteButton.style.paddingTop = "14px"
-  favoriteButton.style.paddingRight = "10px"
+  favoriteText.style.paddingRight = "5px"
+
+  const renderButton = renderFavButton()
 
   cardImgDiv.appendChild(imgLink)
   imgLink.appendChild(cardImg)
   mainCard.appendChild(cardImgDiv)
-  mainCard.appendChild(favoriteButton)
+  mainCard.appendChild(renderButton)
   mainCard.appendChild(favoriteText)
   mainCard.appendChild(gameInfo)
   mainCard.appendChild(cardName)
@@ -224,6 +256,9 @@ function attachFavoritesTabLink(){
 function attachGeneratorTabLink(){
   generatorTab().addEventListener("click", renderGeneratorTab)
 }
+// function attachFavoriteButton(){
+// renderGameCard(game).addEventListener("submit",postFavoriteGame(gameOBJ))
+// }
 
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -232,5 +267,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
   attachGamesTabLink()
   attachFavoritesTabLink()
   attachGeneratorTabLink()
+  // attachFavoriteButton()
 })
 
