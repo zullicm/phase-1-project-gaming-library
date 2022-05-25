@@ -18,9 +18,12 @@ const generatorTab = () => document.getElementById("generator")
     }
   };
   
- fetch('https://free-to-play-games-database.p.rapidapi.com/api/games', options)
+ fetch('https://free-to-play-games-database.p.rapidapi.com/api/games?sort-by=alphabetical', options)
     .then(response => response.json())
-    .then(data => data.forEach(game => renderGameCard(game)))
+    .then(data => {
+      console.log(data)
+      data.forEach(game => renderGameCard(game))
+    })
     .catch(err => console.error(err));
   }
   // Finish GET --------------------------------------------------------------
@@ -94,12 +97,7 @@ gameDiv.innerHTML = `
 // Game Tab ----------------------------------------------------------------
 function renderGameTab(){
   resetMainDiv()
-  console.log(fetchFreeGames())
-
-
-  const h1 = document.createElement('h1')
-  h1.innerText = "TBD This is a test of rendering the games tab"
-  mainDiv().appendChild(h1)
+  fetchFreeGames()
 }
 
 // Favorites Tab -----------------------------------------------------------
@@ -124,9 +122,20 @@ function renderGeneratorTab(){
 
 function renderGameCard(game){
   const mainCard = document.createElement('div')
-  mainCard.innerHTML = `
-  <img src="${game.thumbnail}" class="game-thumbnail" />
-  `
+  mainCard.classList.add('mainCardDiv')
+  const cardImg = document.createElement('img')
+  cardImg.src = game.thumbnail
+  cardImg.classList.add('game-thumbnail')
+  // mainCard.innerHTML = `
+  // <img src="${game.thumbnail}" class="game-thumbnail" />
+  // `
+  const cardName = document.createElement('h4')
+  cardName.classList.add("card-title")
+  cardName.innerText = `${game.title}`
+
+  
+  mainCard.appendChild(cardImg)
+  mainCard.appendChild(cardName)
   mainDiv().appendChild(mainCard)
 }
 
