@@ -123,9 +123,11 @@ function renderGeneratorTab(){
 function renderGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
+  const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
   cardImg.src = game.thumbnail
   cardImg.classList.add('game-thumbnail')
+  cardImgDiv.classList.add('game-thumbnail-div')
   // mainCard.innerHTML = `
   // <img src="${game.thumbnail}" class="game-thumbnail" />
   // `
@@ -133,8 +135,15 @@ function renderGameCard(game){
   cardName.classList.add("card-title")
   cardName.innerText = `${game.title}`
 
+  const gameInfo = document.createElement('div')
+  gameInfo.classList.add('gameInfo')
+  gameInfo.innerHTML = `
+  <p>Platform: ${game.platform} | Genre: ${game.genre}</p>
+  `
   
-  mainCard.appendChild(cardImg)
+  cardImgDiv.appendChild(cardImg)
+  mainCard.appendChild(cardImgDiv)
+  mainCard.appendChild(gameInfo)
   mainCard.appendChild(cardName)
   mainDiv().appendChild(mainCard)
 }

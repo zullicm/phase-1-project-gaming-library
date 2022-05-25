@@ -2,16 +2,29 @@
   background-color: #bdbdbd;
   margin-top: 20px;
   border-radius: 5px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #afafaf;
 }
-.game-thumbnail{
+.game-thumbnail-div{
   padding-top: 20px;
   padding-left: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  float: left;
+}
+.game-thumbnail{
+  border-radius: 10px;
+}
+
+.gameInfo{
+  padding-left: 15px;
+  padding-top: 15px;
+  float: left;
 }
 
 .card-title{
   margin-top: 5px;
   padding-left: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   max-width: 430px;
 }
