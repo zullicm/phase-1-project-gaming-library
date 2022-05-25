@@ -6,6 +6,25 @@ const logo = () => document.getElementById('logo')
 const favoritesTab = () => document.getElementById("favorites")
 const generatorTab = () => document.getElementById("generator")
 
+// Fetch Requests ----------------------------------------------------------
+
+  // GET Request -----------------------------------------------------------
+  function fetchFreeGames(){
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com',
+      'X-RapidAPI-Key': ''
+    }
+  };
+  
+ fetch('https://free-to-play-games-database.p.rapidapi.com/api/games', options)
+    .then(response => response.json())
+    .then(data => data.forEach(game => renderGameCard(game)))
+    .catch(err => console.error(err));
+  }
+  // Finish GET --------------------------------------------------------------
+
 // Page Renders
 // Home Page ---------------------------------------------------------------
 function renderHomePage(){
@@ -75,6 +94,8 @@ gameDiv.innerHTML = `
 // Game Tab ----------------------------------------------------------------
 function renderGameTab(){
   resetMainDiv()
+  console.log(fetchFreeGames())
+
 
   const h1 = document.createElement('h1')
   h1.innerText = "TBD This is a test of rendering the games tab"
@@ -98,6 +119,17 @@ function renderGeneratorTab(){
   h1.innerText = "TBD This is a test of rendering the generator tab"
   mainDiv().appendChild(h1)
 }
+
+// Game Card Render --------------------------------------------------------
+
+function renderGameCard(game){
+  const mainCard = document.createElement('div')
+  mainCard.innerHTML = `
+  <img src="${game.thumbnail}" class="game-thumbnail" />
+  `
+  mainDiv().appendChild(mainCard)
+}
+
 
 // Page reset --------------------------------------------------------------
 function resetMainDiv(){
@@ -128,3 +160,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
   attachFavoritesTabLink()
   attachGeneratorTabLink()
 })
+
