@@ -8,7 +8,7 @@ const generatorTab = () => document.getElementById("generator")
 
 // Fetch Requests ----------------------------------------------------------
 
-  // GET Request -----------------------------------------------------------
+  // GET Request (ALL)------------------------------------------------------
   function fetchFreeGames(){
   const options = {
     method: 'GET',
@@ -17,7 +17,7 @@ const generatorTab = () => document.getElementById("generator")
       'X-RapidAPI-Key': ''
     }
   };
-  
+
  fetch('https://free-to-play-games-database.p.rapidapi.com/api/games?sort-by=alphabetical', options)
     .then(response => response.json())
     .then(data => {
@@ -26,7 +26,9 @@ const generatorTab = () => document.getElementById("generator")
     })
     .catch(err => console.error(err));
   }
-  // Finish GET --------------------------------------------------------------
+  // Finish GET ------------------------------------------------------------
+
+  // GET Request (FAV) -----------------------------------------------------
 
 // Page Renders
 // Home Page ---------------------------------------------------------------
@@ -103,10 +105,7 @@ function renderGameTab(){
 // Favorites Tab -----------------------------------------------------------
 function renderFavoritesTab(){
   resetMainDiv()
-
-  const h1 = document.createElement('h1')
-  h1.innerText = "TBD This is a test of rendering the favorites tab"
-  mainDiv().appendChild(h1)
+  fetchFavGames()
 }
 
 // Generator Tab -----------------------------------------------------------
@@ -123,14 +122,16 @@ function renderGeneratorTab(){
 function renderGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
+  mainCard.setAttribute('id',`${game.id}`)
+
   const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
+  const imgLink = document.createElement('a')
+  imgLink.href = game.game_url
   cardImg.src = game.thumbnail
   cardImg.classList.add('game-thumbnail')
   cardImgDiv.classList.add('game-thumbnail-div')
-  // mainCard.innerHTML = `
-  // <img src="${game.thumbnail}" class="game-thumbnail" />
-  // `
+
   const cardName = document.createElement('h4')
   cardName.classList.add("card-title")
   cardName.innerText = `${game.title}`
@@ -138,10 +139,63 @@ function renderGameCard(game){
   const gameInfo = document.createElement('div')
   gameInfo.classList.add('gameInfo')
   gameInfo.innerHTML = `
-  <p>Platform: ${game.platform} | Genre: ${game.genre}</p>
+  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
+  <p><b>Release Date:</b> ${game.release_date}</p>
+  <h5 class= "description"></b>Description:</b></h5>
+  <p>"${game.short_description}"</p>
+  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
-  
-  cardImgDiv.appendChild(cardImg)
+  const favoriteText = document.createElement('p')
+  favoriteText.innerText = "Favorite Game"
+  const favoriteButton = document.createElement('i')
+  favoriteButton.classList.add("material-icons")
+  favoriteButton.innerText = "add_circle_outline"
+  favoriteText.style.float = "right"
+  favoriteButton.style.float = "right"
+  favoriteButton.style.paddingTop = "14px"
+  favoriteButton.style.paddingRight = "10px"
+
+  cardImgDiv.appendChild(imgLink)
+  imgLink.appendChild(cardImg)
+  mainCard.appendChild(cardImgDiv)
+  mainCard.appendChild(favoriteButton)
+  mainCard.appendChild(favoriteText)
+  mainCard.appendChild(gameInfo)
+  mainCard.appendChild(cardName)
+  mainDiv().appendChild(mainCard)
+}
+
+// FAVORITE CARDS RENDER----------------------------------------------------
+
+function renderFavGameCard(game){
+  const mainCard = document.createElement('div')
+  mainCard.classList.add('mainCardDiv')
+  mainCard.setAttribute('id',`${game.id}`)
+
+  const cardImgDiv = document.createElement('div')
+  const cardImg = document.createElement('img')
+  const imgLink = document.createElement('a')
+  imgLink.href = game.game_url
+  cardImg.src = game.thumbnail
+  cardImg.classList.add('game-thumbnail')
+  cardImgDiv.classList.add('game-thumbnail-div')
+
+  const cardName = document.createElement('h4')
+  cardName.classList.add("card-title")
+  cardName.innerText = `${game.title}`
+
+  const gameInfo = document.createElement('div')
+  gameInfo.classList.add('gameInfo')
+  gameInfo.innerHTML = `
+  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
+  <p><b>Release Date:</b> ${game.release_date}</p>
+  <h5 class= "description"></b>Description:</b></h5>
+  <p>"${game.short_description}"</p>
+  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
+  `
+
+  cardImgDiv.appendChild(imgLink)
+  imgLink.appendChild(cardImg)
   mainCard.appendChild(cardImgDiv)
   mainCard.appendChild(gameInfo)
   mainCard.appendChild(cardName)
@@ -170,6 +224,7 @@ function attachFavoritesTabLink(){
 function attachGeneratorTabLink(){
   generatorTab().addEventListener("click", renderGeneratorTab)
 }
+
 
 document.addEventListener("DOMContentLoaded", ()=>{
   renderHomePage()
