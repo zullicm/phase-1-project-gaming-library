@@ -352,6 +352,7 @@ function renderFavGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
   mainCard.setAttribute('id',`${game.id}`)
+  mainCard.style.marginBottom = "10px"
 
   const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
@@ -376,21 +377,17 @@ function renderFavGameCard(game){
   `
 
 
-  const favoriteText = document.createElement('h5')
-  favoriteText.innerText = "Favorite Game"
-  favoriteText.style.float = "right"
-  favoriteText.style.paddingRight = "5px"
-  favoriteText.style.marginTop = "10px"
+
 
   const btn = document.createElement("button")
   btn.classList.add("btn", "waves-effect", "waves-light")
   btn.setAttribute("type", "submit")
   btn.innerHTML = `
-  Favorite <i class="material-icons right">add_circle_outline</i>`
+  Delete <i class="material-icons right">delete</i>`
   btn.style.float = "right"
   btn.style.marginTop = "15px"
   btn.style.marginRight = '20px'
-  btn.style.backgroundColor = "#2196f3"
+  btn.style.backgroundColor = "#f44336"
 
   btn.addEventListener("click", () => deleteGame(game.id))
 
