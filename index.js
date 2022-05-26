@@ -5,6 +5,7 @@ const gameTab =  () => document.getElementById('gametab')
 const logo = () => document.getElementById('logo')
 const favoritesTab = () => document.getElementById("favorites")
 const generatorTab = () => document.getElementById("generator")
+const ok = logo
 
 // Fetch Requests ----------------------------------------------------------
 
