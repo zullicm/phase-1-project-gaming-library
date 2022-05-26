@@ -219,6 +219,7 @@ function renderRanGameCard(game){
   mainCard.appendChild(btn)
   mainCard.appendChild(gameInfo)
   mainCard.appendChild(cardName)
+  mainCard.style.marginBottom = "30px"
   
   mainDiv().appendChild(mainCard)
 }
@@ -276,6 +277,7 @@ function renderGameCard(game){
   mainCard.appendChild(btn)
   mainCard.appendChild(gameInfo)
   mainCard.appendChild(cardName)
+
   
   mainDiv().appendChild(mainCard)
 }
@@ -430,7 +432,7 @@ function attachFavoritesTabLink(){
 }
 
 
-  mainDiv().addEventListener("click", fetchRandomGame(getRandomInt(519)))
+mainDiv().addEventListener("click", fetchRandomGame(getRandomInt(519)))
 
 
 document.addEventListener("DOMContentLoaded", ()=>{
