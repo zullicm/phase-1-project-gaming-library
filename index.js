@@ -142,13 +142,13 @@ gameDiv.innerHTML = `
   mainDiv().appendChild(h3)
   mainDiv().appendChild(h5)
   mainDiv().appendChild(gameDiv)
+  mainDiv().addEventListener("click", fetchRandomGame(getRandomInt(519)))
 }
 
 // Game Tab ----------------------------------------------------------------
 function renderGameTab(){
   resetMainDiv()
   fetchFreeGames()
-  
 }
 
 // Favorites Tab -----------------------------------------------------------
