@@ -8,16 +8,17 @@ const favoritesTab = () => document.getElementById("favorites")
 
 // Fetch Requests ----------------------------------------------------------
 
+// OPTIONS HOLDS KEY REMOVE BEFORE PUSHING OR COMMITING---------------------
+const options = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com',
+    'X-RapidAPI-Key': ''
+  }
+};
+
   // GET Request (ALL)------------------------------------------------------
   function fetchFreeGames(){
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com',
-      'X-RapidAPI-Key': ''
-    }
-  };
-
  fetch('https://free-to-play-games-database.p.rapidapi.com/api/games?sort-by=alphabetical', options)
     .then(response => response.json())
     .then(data => {
@@ -56,18 +57,11 @@ const favoritesTab = () => document.getElementById("favorites")
   }
 
   // GET For Random Game
-function fetchRandomGame(ranNum){
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com',
-      'X-RapidAPI-Key': ''
-    }
-  };
-  fetch(`https://free-to-play-games-database.p.rapidapi.com/api/game?id=${ranNum}`, options)
-	.then(response => response.json())
-	.then(data => renderRanGameCard(data))
-	.catch(err => errorRender(err));
+  function fetchRandomGame(ranNum){
+    fetch(`https://free-to-play-games-database.p.rapidapi.com/api/game?id=${ranNum}`, options)
+	  .then(response => response.json())
+	  .then(data => renderRanGameCard(data))
+	  .catch(err => errorRender(err));
   }
 
   function getRandomInt(max) {
