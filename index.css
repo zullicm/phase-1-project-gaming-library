@@ -1,3 +1,14 @@
+
+#welcome{
+  border-top-left-radius: 25px;
+  border-top-left-radius: 25px;
+  margin-bottom: 0px;
+}
+
+
+
+
+
 .mainCardDiv{
   background-color: #bdbdbd;
   margin-top: 20px;
@@ -6,12 +17,14 @@
   border-width: 2px;
   border-color: #afafaf;
 }
+
 .game-thumbnail-div{
   padding-top: 20px;
   padding-left: 20px;
   margin-bottom: 15px;
   float: left;
 }
+
 .game-thumbnail{
   border-radius: 10px;
 }

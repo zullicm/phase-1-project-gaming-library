@@ -84,21 +84,16 @@ function renderHomePage(){
   resetMainDiv()
   // h1 text
   const h1 = document.createElement('h1')
+  h1.setAttribute("id", "welcome")
+  h1.classList.add('white-text', 'blue', 'center-align')
   h1.innerText = "Welcome!"
-  h1.style.marginBottom = "0"
-  h1.classList.add("center-align")
-  h1.classList.add('white-text')
-  h1.classList.add('blue')
-  h1.style.borderTopLeftRadius = "25px"
-  h1.style.borderTopRightRadius = "25px"
+
   // h3 text
   const h3 = document.createElement('h3')
+  h3.classList.add('white-text', 'blue', 'center-align')
   h3.innerText = "to Free-2-Play Game Sorter & Generator!"
   h3.style.marginTop = "0"
   h3.style.paddingBottom = "10px"
-  h3.classList.add("center-align")
-  h3.classList.add('white-text')
-  h3.classList.add('blue')
   h3.style.borderBottomLeftRadius = "25px"
   h3.style.borderBottomRightRadius = "25px"
   // h5 text
@@ -421,10 +416,6 @@ function attachGamesTabLink(){
 function attachFavoritesTabLink(){
   favoritesTab().addEventListener("click", renderFavoritesTab)
 }
-
-
-mainDiv().addEventListener("click", fetchRandomGame(getRandomInt(519)))
-
 
 document.addEventListener("DOMContentLoaded", ()=>{
   renderHomePage()
