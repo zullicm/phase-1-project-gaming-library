@@ -39,9 +39,11 @@ const options = {
     fetch(`https://free-to-play-games-database.p.rapidapi.com/api/filter?tag=${genre}&platform=${platform}`, options)
     .then(response => response.json())
     .then(data => {
-      sortedFreeGames.push(data)
+      sortedFreeGames.unshift(data)
       console.log(sortedFreeGames)
-      sortedFreeGames[0].forEach(game => renderGameCard(game))
+
+      sortedFreeGames[0].forEach(game => renderSortedGameCard(game))
+      
     })
     .catch(err => console.error(err));
   }
@@ -187,7 +189,6 @@ function renderSortByTab(){
   const submitDiv = document.createElement('div') 
   submitDiv.setAttribute('id', 'form-div')
   submitDiv.style.marginTop = '30px'
-  submitDiv.style.backgroundColor = 'grey'
 
   const form = document.createElement('form')
   form.setAttribute('id', 'game-sortBy')
@@ -211,13 +212,14 @@ function renderSortByTab(){
   inputSubmit.setAttribute('type', 'submit')
   inputSubmit.setAttribute('value', 'Sort')
 
+
   form.addEventListener('submit', e => {
     e.preventDefault()
     console.log(inputGenre.value)
     console.log(inputPlatform.value)
     fetchFreeGamesGenreAndPlatform(inputGenre.value, inputPlatform.value)
+    renderSortByTab()
   })
-
   form.appendChild(inputGenre)
   form.appendChild(inputPlatform)
   form.appendChild(inputSubmit)
@@ -404,12 +406,52 @@ function renderFavGameCard(game){
 const deleteGame = game => {
   deleteFavGame(game)
 } 
-// RANDOM GAME GENERATOR ---------------------------------------------------
+// Sort card render ---------------------------------------------------
+function renderSortedGameCard(game){
+  const mainCard = document.createElement('div')
+  mainCard.classList.add('mainCardDiv')
 
+
+  const cardImgDiv = document.createElement('div')
+  const cardImg = document.createElement('img')
+  const imgLink = document.createElement('a')
+  imgLink.href = game.game_url
+  cardImg.src = game.thumbnail
+  cardImg.classList.add('game-thumbnail')
+  cardImgDiv.classList.add('game-thumbnail-div')
+
+  const cardName = document.createElement('h4')
+  cardName.classList.add("card-title")
+  cardName.innerText = `${game.title}`
+
+  const gameInfo = document.createElement('div')
+  gameInfo.classList.add('gameInfo')
+  gameInfo.innerHTML = `
+  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
+  <p><b>Release Date:</b> ${game.release_date}</p>
+  <h5 class= "description"></b>Description:</b></h5>
+  <p>"${game.short_description}"</p>
+  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
+  `
+
+  cardImgDiv.appendChild(imgLink)
+  imgLink.appendChild(cardImg)
+  mainCard.appendChild(cardImgDiv)
+  addDeleteButton("favorite", "#2196f3", mainCard, game)
+  
+  mainCard.appendChild(gameInfo)
+  mainCard.appendChild(cardName)
+
+  mainDiv().appendChild(mainCard)
+}
 
 // Page reset --------------------------------------------------------------
 function resetMainDiv(){
   mainDiv().innerHTML = ""
+}
+
+function resetSecondaryDiv(){
+
 }
 
 // EventListeners
