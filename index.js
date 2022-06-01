@@ -40,6 +40,7 @@ const options = {
     .then(response => response.json())
     .then(data => {
       sortedFreeGames.push(data)
+      console.log(sortedFreeGames)
       sortedFreeGames[0].forEach(game => renderGameCard(game))
     })
     .catch(err => console.error(err));
@@ -203,6 +204,7 @@ function renderSortByTab(){
   inputPlatform.setAttribute('id', 'platform')
   inputPlatform.setAttribute('type', 'text')
   inputPlatform.setAttribute('name', 'platform')
+  inputPlatform.defaultValue = 'all'
   inputPlatform.setAttribute('placeholder', 'Type In A Platform (OPTIONAL)')
 
   const inputSubmit = document.createElement('input')
