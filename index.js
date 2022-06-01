@@ -159,6 +159,8 @@ function renderHomePage(){
   gameDiv.innerHTML = `
   <h5 id="welcome-game-tab">- Game Tab</h5>
     <p>A list of all FREE games stored under the api. Features a sorting system and a "Favorite" button</p>
+  <h5>- Sort By Tab</h5>
+    <p>A way to sort through every game. Using this feature you can sort using the games genres, you can also sort by which platform the game is available on (Note that this is optional).</p>
   <h5>- Favorites Tab</h5>
     <p>This tab is where the games you favorited go, use this to save games that you liked or want to remember to play later, or maybe use it as a way to store your favorite free games!</p>
   <h5>- Random Game Generator</h5>
@@ -205,14 +207,22 @@ function renderSortByTab(){
   inputPlatform.setAttribute('id', 'platform')
   inputPlatform.setAttribute('type', 'text')
   inputPlatform.setAttribute('name', 'platform')
-  inputPlatform.defaultValue = 'all'
-  inputPlatform.setAttribute('placeholder', 'Type In A Platform (OPTIONAL)')
+  inputPlatform.setAttribute('placeholder', `Type In A Platform (type "all" if you aren't looking for a specific platform)`)
 
   const inputSubmit = document.createElement('input')
   inputSubmit.setAttribute('type', 'submit')
   inputSubmit.setAttribute('value', 'Sort')
+//------------------------
+  const helpToolDiv = document.createElement('div')
+  helpToolDiv.classList.add('tooltip')
+  helpToolDiv.innerText = `Help! I don't know how to sort!`
 
-
+  const helpTool = document.createElement('span')
+  helpTool.classList.add('tooltiptext')
+  helpTool.innerText = "There is a LARGE list of genres, thankfully we have them compiled for you right here! ____________________________________________________________________________ mmorpg, shooter, strategy, moba, racing, sports, social, sandbox, open-world, survival, pvp, pve, pixel, voxel, zombie, turn-based, first-person, third-Person, top-down, tank, space, sailing, side-scroller, superhero, permadeath, card, battle-royale, mmo, mmofps, mmotps, 3d, 2d, anime, fantasy, sci-fi, fighting, action-rpg, action, military, martial-arts, flight, low-spec, tower-defense, horror, mmorts ____________________________________________________________________________  Also here are the available platforms: pc, browser, or all "
+  
+  helpToolDiv.appendChild(helpTool)
+//----------------------------
   form.addEventListener('submit', e => {
     e.preventDefault()
     console.log(inputGenre.value)
@@ -220,20 +230,17 @@ function renderSortByTab(){
     fetchFreeGamesGenreAndPlatform(inputGenre.value, inputPlatform.value)
     renderSortByTab()
   })
+
+
   form.appendChild(inputGenre)
   form.appendChild(inputPlatform)
   form.appendChild(inputSubmit)
- submitDiv.appendChild(form)
-mainDiv().appendChild(submitDiv)
-}
-
-
-
-// https://free-to-play-games-database.p.rapidapi.com/api/games?platform=${platform}&category=${category}&sort-by=${sort}
   
-
-
-
+ submitDiv.appendChild(form)
+ mainDiv().appendChild(submitDiv)
+ mainDiv().appendChild(helpToolDiv)
+}
+  
 // Rando game render -------------------------------------------------------
 function renderRanGameCard(game){
   const mainCard = document.createElement('div')
@@ -241,7 +248,6 @@ function renderRanGameCard(game){
     errorRender()
   }else{
   mainCard.classList.add('mainCardDiv')
-
 
   const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
@@ -264,7 +270,6 @@ function renderRanGameCard(game){
   <p>"${game.short_description}"</p>
   <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
-
   const btn = document.createElement("button")
   btn.classList.add("btn", "waves-effect", "waves-light")
   btn.setAttribute("type", "submit")
@@ -288,14 +293,11 @@ function renderRanGameCard(game){
   mainDiv().appendChild(mainCard)
   }
 }
-
-
 // Game Card Render --------------------------------------------------------
 
 function renderGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
-
 
   const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
@@ -318,7 +320,6 @@ function renderGameCard(game){
   <p>"${game.short_description}"</p>
   <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
-
   cardImgDiv.appendChild(imgLink)
   imgLink.appendChild(cardImg)
   mainCard.appendChild(cardImgDiv)
@@ -343,9 +344,6 @@ const addDeleteButton = (text, color, append, game) => {
   btn.addEventListener("click", () => postFavoriteGame(game))
   append.appendChild(btn)
 }
-
-
-
 // FAVORITE CARDS RENDER----------------------------------------------------
 
 function renderFavGameCard(game){
@@ -375,10 +373,6 @@ function renderFavGameCard(game){
   <p>"${game.short_description}"</p>
   <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
-
-
-
-
   const btn = document.createElement("button")
   btn.classList.add("btn", "waves-effect", "waves-light")
   btn.setAttribute("type", "submit")
@@ -401,8 +395,6 @@ function renderFavGameCard(game){
   mainDiv().appendChild(mainCard)
 }
 
-
-
 const deleteGame = game => {
   deleteFavGame(game)
 } 
@@ -410,7 +402,6 @@ const deleteGame = game => {
 function renderSortedGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
-
 
   const cardImgDiv = document.createElement('div')
   const cardImg = document.createElement('img')
@@ -433,7 +424,6 @@ function renderSortedGameCard(game){
   <p>"${game.short_description}"</p>
   <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
-
   cardImgDiv.appendChild(imgLink)
   imgLink.appendChild(cardImg)
   mainCard.appendChild(cardImgDiv)
@@ -450,9 +440,6 @@ function resetMainDiv(){
   mainDiv().innerHTML = ""
 }
 
-function resetSecondaryDiv(){
-
-}
 
 // EventListeners
 function attachLogoLink(){
