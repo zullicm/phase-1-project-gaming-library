@@ -35,8 +35,8 @@ const options = {
   }
 
   // GET Request (Genre & Platform & SortBy)
-  function fetchFreeGamesGenreAndPlatform(urlWithForm){
-    fetch(`${urlWithForm}`, options)
+  function fetchFreeGamesGenreAndPlatform(genre, platform){
+    fetch(`https://free-to-play-games-database.p.rapidapi.com/api/filter?tag=${genre}&platform=${platform}`, options)
     .then(response => response.json())
     .then(data => {
       sortedFreeGames.push(data)
@@ -185,6 +185,8 @@ function renderSortByTab(){
   resetMainDiv()
   const submitDiv = document.createElement('div') 
   submitDiv.setAttribute('id', 'form-div')
+  submitDiv.style.marginTop = '30px'
+  submitDiv.style.backgroundColor = 'grey'
 
   const form = document.createElement('form')
   form.setAttribute('id', 'game-sortBy')
@@ -205,19 +207,20 @@ function renderSortByTab(){
 
   const inputSubmit = document.createElement('input')
   inputSubmit.setAttribute('type', 'submit')
+  inputSubmit.setAttribute('value', 'Sort')
 
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    console.log(inputGenre.value)
+    console.log(inputPlatform.value)
+    fetchFreeGamesGenreAndPlatform(inputGenre.value, inputPlatform.value)
+  })
 
-
-submitForm.innerHTML =`
-<form id="game-sortBy" action="" method="POST">
-<label for="platform">Sort By</label>
-<input type="text" id="genre" name="genre" placeholder="Type In A Genre">
-<input type="text" id="platform" name="platform" placeholder="Type In A Platform (Optional)">
-<input type="submit" value="">
-</form>
-`
-
-mainDiv().appendChild(submitForm)
+  form.appendChild(inputGenre)
+  form.appendChild(inputPlatform)
+  form.appendChild(inputSubmit)
+ submitDiv.appendChild(form)
+mainDiv().appendChild(submitDiv)
 }
 
 
