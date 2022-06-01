@@ -4,9 +4,12 @@ const mainDiv = () => document.getElementById('main')
 const gameTab =  () => document.getElementById('gametab')
 const logo = () => document.getElementById('logo')
 const favoritesTab = () => document.getElementById("favorites")
+const sortByTab = () => document.getElementById("sortby")
+
 
   const allFreeGames = []
   const allFavGames = []
+  const sortedFreeGames = []
 
 // Fetch Requests ----------------------------------------------------------
 
@@ -25,15 +28,23 @@ const options = {
     .then(response => response.json())
     .then(data => {
       allFreeGames.push(data)
+      console.log(data)
       allFreeGames[0].forEach(game => renderGameCard(game))
     })
     .catch(err => console.error(err));
   }
 
-  // GET Request (Genre & Platform)
-  function fetchFreeGamesGenreAndPlatform(platform, category, sort){
-    fetch(`https://free-to-play-games-database.p.rapidapi.com/api/games?platform=${platform}&category=${category}&sort-by=${sort}`, options)
+  // GET Request (Genre & Platform & SortBy)
+  function fetchFreeGamesGenreAndPlatform(urlWithForm){
+    fetch(`${urlWithForm}`, options)
+    .then(response => response.json())
+    .then(data => {
+      sortedFreeGames.push(data)
+      sortedFreeGames[0].forEach(game => renderGameCard(game))
+    })
+    .catch(err => console.error(err));
   }
+  
 
   // Finish GET ------------------------------------------------------------
   function fetchFavGames(){
@@ -43,8 +54,6 @@ const options = {
       allFavGames.splice(0, 1, data)
       let allFavGamesLength = allFavGames[0].length
       if(allFavGamesLength < 1){
-    console.log(allFavGames)
-    console.log("I am empty")
     const placeHolder = document.createElement('div')
     placeHolder.innerHTML = `
     <h2 class='white-text blue center-align welcome'>UH OH! It's Empty!</h2>
@@ -102,7 +111,6 @@ function errorRender(){
 // Home Page ---------------------------------------------------------------
 function renderHomePage(){
   resetMainDiv()
-  // h1 text
   const h1 = document.createElement('h1')
   h1.classList.add('white-text', 'blue', 'center-align', 'welcome')
   h1.innerText = "Welcome!"
@@ -146,6 +154,51 @@ function renderFavoritesTab(){
   resetMainDiv()
   fetchFavGames()
 }
+// Sort By Tab
+function renderSortByTab(){
+  resetMainDiv()
+  const submitDiv = document.createElement('div') 
+  submitDiv.setAttribute('id', 'form-div')
+
+  const form = document.createElement('form')
+  form.setAttribute('id', 'game-sortBy')
+  form.setAttribute('action', '') 
+  form.setAttribute('method', 'GET')
+
+  const inputGenre = document.createElement('input')
+  inputGenre.setAttribute('id', 'genre')
+  inputGenre.setAttribute('type', 'text')
+  inputGenre.setAttribute('name', 'genre')
+  inputGenre.setAttribute('placeholder', 'Type In A Genre')
+
+  const inputPlatform = document.createElement('input')
+  inputPlatform.setAttribute('id', 'platform')
+  inputPlatform.setAttribute('type', 'text')
+  inputPlatform.setAttribute('name', 'platform')
+  inputPlatform.setAttribute('placeholder', 'Type In A Platform (OPTIONAL)')
+
+  const inputSubmit = document.createElement('input')
+  inputSubmit.setAttribute('type', 'submit')
+
+
+
+submitForm.innerHTML =`
+<form id="game-sortBy" action="" method="POST">
+<label for="platform">Sort By</label>
+<input type="text" id="genre" name="genre" placeholder="Type In A Genre">
+<input type="text" id="platform" name="platform" placeholder="Type In A Platform (Optional)">
+<input type="submit" value="">
+</form>
+`
+
+mainDiv().appendChild(submitForm)
+}
+
+
+
+// https://free-to-play-games-database.p.rapidapi.com/api/games?platform=${platform}&category=${category}&sort-by=${sort}
+  
+
 
 
 // Rando game render -------------------------------------------------------
@@ -175,11 +228,6 @@ function renderRanGameCard(game){
   <p>"${game.short_description}"</p>
   <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
   `
-  const favoriteText = document.createElement('h5')
-  favoriteText.innerText = "Favorite Game"
-  favoriteText.style.float = "right"
-  favoriteText.style.paddingRight = "5px"
-  favoriteText.style.marginTop = "10px"
 
   const btn = document.createElement("button")
   btn.classList.add("btn", "waves-effect", "waves-light")
@@ -342,9 +390,14 @@ function attachFavoritesTabLink(){
   favoritesTab().addEventListener("click", renderFavoritesTab)
 }
 
+function attachSortByTabLink(){
+  sortByTab().addEventListener('click',renderSortByTab)
+}
+
 document.addEventListener("DOMContentLoaded", ()=>{
   renderHomePage()
   attachLogoLink()
   attachGamesTabLink()
   attachFavoritesTabLink()
+  attachSortByTabLink()
 })

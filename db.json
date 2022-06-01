@@ -1,3 +1,53 @@
 {
-  "favorites": []
+  "favorites": [
+    {
+      "id": 306,
+      "title": "4Story",
+      "thumbnail": "https://www.freetogame.com/g/306/thumbnail.jpg",
+      "short_description": "A enjoyable MMORPG where you can customize your character, join guilds and battle other factions.",
+      "game_url": "https://www.freetogame.com/open/4story",
+      "genre": "MMORPG",
+      "platform": "PC (Windows)",
+      "publisher": "Zemi Interactive",
+      "developer": "Zemi Interactive",
+      "release_date": "2008-10-20",
+      "freetogame_profile_url": "https://www.freetogame.com/4story"
+    },
+    {
+      "id": 23,
+      "title": "Apex Legends",
+      "thumbnail": "https://www.freetogame.com/g/23/thumbnail.jpg",
+      "status": "Live",
+      "short_description": "A free-to-play strategic battle royale game featuring 60-player matches and team-based play. ",
+      "description": "Apex Legends is a free-to-play strategic battle royale featuring 60-player matches and team-based play. Not only do players work together to survive and defeat the other teams, but teammates can also resurrect their fallen comrades provided they use Respawn Beacons.\r\n\r\nThe game makes other changes to the battle royale genre as well, such as the Intelligent Inventory that offers players a way to find exactly what they need, and a new deployment method.\r\n\r\nPlayers can choose between eight different “Legends”, this game’s version of heroes or champions. These range from a professional soldier to a holographic trickster. Of course, the requisite meat shield and medic are present in the lineup.\r\n\r\nPlayers unlock characters by collecting Legend Tokens. Twelve-thousand tokens are required to unlock one character. Since tokens are earned by playing matches, those who spend the most time in the game will unlock all the characters faster than those who spend less.\r\n\r\nAs with other battle royales, players can purchase packs filled with cosmetics and crafting materials. And, yes, there is a battle pass filled with seasonal cosmetics.",
+      "game_url": "https://www.freetogame.com/open/apex-legends",
+      "genre": "Shooter",
+      "platform": "Windows",
+      "publisher": "Electronic Arts",
+      "developer": "Electronic Arts",
+      "release_date": "2019-02-04",
+      "freetogame_profile_url": "https://www.freetogame.com/apex-legends",
+      "minimum_system_requirements": {
+        "os": "64-bit Windows 10",
+        "processor": "Intel Core i3-6300 3.8GHz / AMD FX-4350 4.2 GHz Quad-Core Processor",
+        "memory": "6GB",
+        "graphics": "NVIDIA GeForce GT 640 / Radeon HD 7700",
+        "storage": "Minimum 30 GB of free space"
+      },
+      "screenshots": [
+        {
+          "id": 87,
+          "image": "https://www.freetogame.com/g/23/Apex-Legends-1.jpg"
+        },
+        {
+          "id": 88,
+          "image": "https://www.freetogame.com/g/23/Apex-Legends-2.jpg"
+        },
+        {
+          "id": 89,
+          "image": "https://www.freetogame.com/g/23/Apex-Legends-3.jpg"
+        }
+      ]
+    }
+  ]
 }
