@@ -101,11 +101,37 @@ const options = {
 // Page Renders
 function errorRender(){
   const card = document.createElement('div')
-  card.innerHTML = `
-  <h2>OOPS!</h2>
-  <h4>Looks like we couldn't retrieve a game... Our bad!</h4>
-  <h5>Please refresh the page to try again!</h5>`
-  mainDiv.appendChild(card)
+
+  const h2 = document.createElement('h2')
+  h2.innerText = "OOPS!"
+  const h4 = document.createElement('h4')
+  h4.innerText = "Looks like we couldn't retrieve a game... Our bad!"
+  const h5 = document.createElement('h5')
+  h5.innerText = "Please refresh the page to try again!"
+  
+  h2.classList.add('white-text', 'red', 'center-align', 'welcome')
+  h4.classList.add('white-text', 'red', 'center-align',)
+  h5.classList.add('white-text', 'red', 'center-align')
+
+  h2.style.marginBottom = '0px'
+  h2.style.paddingBottom = '5px'
+
+  h4.style.marginTop = '0px'
+  h4.style.marginBottom = '0px'
+  h4.style.paddingBottom = '5px'
+
+
+  h5.style.borderBottomLeftRadius = "25px"
+  h5.style.borderBottomRightRadius = "25px"
+  h5.style.marginBottom = "50px"
+  h5.style.marginTop = '0px'
+  h5.style.paddingBottom = '5px'
+
+  card.appendChild(h2)
+  card.appendChild(h4)
+  card.appendChild(h5)
+
+  mainDiv().appendChild(card)
 }
 
 // Home Page ---------------------------------------------------------------
@@ -204,6 +230,9 @@ mainDiv().appendChild(submitForm)
 // Rando game render -------------------------------------------------------
 function renderRanGameCard(game){
   const mainCard = document.createElement('div')
+  if(game.title === undefined){
+    errorRender()
+  }else{
   mainCard.classList.add('mainCardDiv')
 
 
@@ -250,6 +279,7 @@ function renderRanGameCard(game){
   mainCard.style.marginBottom = "30px"
   
   mainDiv().appendChild(mainCard)
+  }
 }
 
 
