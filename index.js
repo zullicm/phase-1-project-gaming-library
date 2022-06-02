@@ -49,7 +49,7 @@ const options = {
   }
   
 
-  // Finish GET ------------------------------------------------------------
+  // Favorite GET ------------------------------------------------------------
   function fetchFavGames(){
     fetch("http://localhost:3000/favorites")
     .then(res => res.json())
@@ -78,6 +78,20 @@ const options = {
       body: JSON.stringify(gameOBJ)
     })
   }
+  //  POST Fav game from homepage
+  function postFavoriteGameHome(gameOBJ){
+    fetch("http://localhost:3000/favorites",{
+      method:'POST',
+      headers:{
+        "Content-Type":'application/json'
+      },
+      body: JSON.stringify(gameOBJ)
+    })
+    .then(renderHomePage())
+  }
+  
+  
+  
 
   // DELETE Request (FAV) --------------------------------------------------
   function deleteFavGame(gameId){
@@ -87,6 +101,7 @@ const options = {
         "Content-Type":'application/json'
       }
     })
+    .then(() => renderFavoritesTab())
   }
 
   // GET For Random Game
@@ -280,7 +295,7 @@ function renderRanGameCard(game){
   btn.style.marginRight = '20px'
   btn.style.backgroundColor = "#2196f3"
 
-  btn.addEventListener("click", () => postFavoriteGame(game))
+  btn.addEventListener("click", () => postFavoriteGameHome(game))
 
   cardImgDiv.appendChild(imgLink)
   imgLink.appendChild(cardImg)
@@ -291,6 +306,7 @@ function renderRanGameCard(game){
   mainCard.style.marginBottom = "30px"
   
   mainDiv().appendChild(mainCard)
+  
   }
 }
 // Game Card Render --------------------------------------------------------
@@ -344,6 +360,7 @@ const addDeleteButton = (text, color, append, game) => {
   btn.addEventListener("click", () => postFavoriteGame(game))
   append.appendChild(btn)
 }
+
 // FAVORITE CARDS RENDER----------------------------------------------------
 
 function renderFavGameCard(game){
