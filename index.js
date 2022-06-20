@@ -17,6 +17,7 @@ const options = {
   method: 'GET',
   headers: {
     'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com',
+    'X-RapidAPI-Key': ''
   }
 };
 
@@ -38,10 +39,7 @@ const options = {
     .then(response => response.json())
     .then(data => {
       sortedFreeGames.unshift(data)
-      console.log(sortedFreeGames)
-
       sortedFreeGames[0].forEach(game => renderSortedGameCard(game))
-      
     })
     .catch(err => console.error(err));
   }
@@ -138,26 +136,17 @@ function renderHomePage(){
   <h5>- Random Game Generator</h5>
   <p>Below we also have a game generator! Refresh the page and a random game out of all the games we have listed will pop up! This is a one of the cooler features we have, say you're bored of the games you have or need something to pass the time. You can open this page up and BOOM! A random <em>free</em> game! </p>  
   `
-  // apending
   mainDiv().appendChild(h1)
   mainDiv().appendChild(h3)
   mainDiv().appendChild(h5)
   mainDiv().appendChild(gameDiv)
   mainDiv().addEventListener("click", fetchRandomGame(getRandomInt(519)))
 }
-
 // Game Tab ----------------------------------------------------------------
 function renderGameTab(){
   resetMainDiv()
   fetchFreeGames()
 }
-
-// Favorites Tab -----------------------------------------------------------
-function renderFavoritesTab(){
-  resetMainDiv()
-  fetchFavGames()
-}
-
 // Sort By Tab
 function renderSortByTab(){
   resetMainDiv()
@@ -184,15 +173,11 @@ function renderSortByTab(){
   const helpToolDiv = document.createElement('div')
   helpToolDiv.classList.add('tooltip')
   helpToolDiv.innerText = `Help! I don't know how to sort!`
-
   form.addEventListener('submit', e => {
     e.preventDefault()
-    console.log(inputGenre.value)
-    console.log(inputPlatform.value)
     fetchFreeGamesGenreAndPlatform(inputGenre.value, inputPlatform.value)
     renderSortByTab()
   })
-  
   helpToolDiv.addEventListener('mouseover', () =>{
     const helpTool = document.createElement('span')
     helpTool.classList.add('tooltiptext')
@@ -217,8 +202,41 @@ function renderSortByTab(){
   mainDiv().appendChild(submitDiv)
   mainDiv().appendChild(helpToolDiv)
 }
+// Favorites Tab -----------------------------------------------------------
+function renderFavoritesTab(){
+  resetMainDiv()
+  fetchFavGames()
+}
 
 // Game Card Renders ==================================================================
+
+//This function renders all the game info it should be added AFTER the button is added
+function renderGameInfo(append, game){
+  const cardImgDiv = document.createElement('div')
+    const cardImg = document.createElement('img')
+    const imgLink = document.createElement('a')
+    imgLink.href = game.game_url
+    cardImg.src = game.thumbnail
+    cardImg.classList.add('game-thumbnail')
+    cardImgDiv.classList.add('game-thumbnail-div')
+    const cardName = document.createElement('h4')
+    cardName.classList.add("card-title")
+    cardName.innerText = `${game.title}`
+    const gameInfo = document.createElement('div')
+    gameInfo.classList.add('gameInfo')
+    gameInfo.innerHTML = `
+    <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
+    <p><b>Release Date:</b> ${game.release_date}</p>
+    <h5 class= "description"></b>Description:</b></h5>
+    <p>"${game.short_description}"</p>
+    <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
+    `
+    cardImgDiv.appendChild(imgLink)
+    imgLink.appendChild(cardImg)
+    append.appendChild(cardImgDiv)
+    append.appendChild(gameInfo)
+    append.appendChild(cardName)
+}
 
 // Rando game render -------------------------------------------------------
 function renderRanGameCard(game){
@@ -226,145 +244,46 @@ function renderRanGameCard(game){
     errorRender()
   }else{
     const mainCard = document.createElement('div')
-  mainCard.classList.add('mainCardDiv')
-  const cardImgDiv = document.createElement('div')
-  const cardImg = document.createElement('img')
-  const imgLink = document.createElement('a')
-  imgLink.href = game.game_url
-  cardImg.src = game.thumbnail
-  cardImg.classList.add('game-thumbnail')
-  cardImgDiv.classList.add('game-thumbnail-div')
-  const cardName = document.createElement('h4')
-  cardName.classList.add("card-title")
-  cardName.innerText = `${game.title}`
-  const gameInfo = document.createElement('div')
-  gameInfo.classList.add('gameInfo')
-  gameInfo.innerHTML = `
-  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
-  <p><b>Release Date:</b> ${game.release_date}</p>
-  <h5 class= "description"></b>Description:</b></h5>
-  <p>"${game.short_description}"</p>
-  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
-  `
-  // --------------------------------
-  const btn = document.createElement("button")
-  btn.classList.add("btn", "waves-effect", "waves-light")
-  btn.setAttribute("type", "submit")
-  btn.innerHTML = `
-  Favorite <i class="material-icons right">add_circle_outline</i>`
-  btn.style.float = "right"
-  btn.style.marginTop = "15px"
-  btn.style.marginRight = '20px'
-  btn.style.backgroundColor = "#2196f3"
-  btn.addEventListener("click", () => postFavoriteGameHome(game))
-  // -----------------------------------
-  cardImgDiv.appendChild(imgLink)
-  imgLink.appendChild(cardImg)
-  mainCard.appendChild(cardImgDiv)
-  mainCard.appendChild(btn)
-  mainCard.appendChild(gameInfo)
-  mainCard.appendChild(cardName)
-  mainCard.style.marginBottom = "30px"
-  mainDiv().appendChild(mainCard)
-  
+    mainCard.classList.add('mainCardDiv')
+    favBtn(mainCard, game, postFavoriteGameHome)
+    renderGameInfo(mainCard, game)
+    mainCard.style.marginBottom = "30px"
+    mainDiv().appendChild(mainCard)
+  }
 }
-}
-// Game Card Render --------------------------------------------------------
 
+// Game Card Render --------------------------------------------------------
 function renderGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
-  const cardImgDiv = document.createElement('div')
-  const cardImg = document.createElement('img')
-  const imgLink = document.createElement('a')
-  imgLink.href = game.game_url
-  cardImg.src = game.thumbnail
-  cardImg.classList.add('game-thumbnail')
-  cardImgDiv.classList.add('game-thumbnail-div')
-  const cardName = document.createElement('h4')
-  cardName.classList.add("card-title")
-  cardName.innerText = `${game.title}`
-  const gameInfo = document.createElement('div')
-  gameInfo.classList.add('gameInfo')
-  gameInfo.innerHTML = `
-  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
-  <p><b>Release Date:</b> ${game.release_date}</p>
-  <h5 class= "description"></b>Description:</b></h5>
-  <p>"${game.short_description}"</p>
-  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
-  `
-  cardImgDiv.appendChild(imgLink)
-  imgLink.appendChild(cardImg)
-  mainCard.appendChild(cardImgDiv)
   favBtn(mainCard, game, postFavoriteGame)
-  mainCard.appendChild(gameInfo)
-  mainCard.appendChild(cardName)
+  renderGameInfo(mainCard, game)
   mainDiv().appendChild(mainCard)
 }
-// --------------------------------
-// --------------------------------
 
 // Sort card render ---------------------------------------------------
 function renderSortedGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
-  const cardImgDiv = document.createElement('div')
-  const cardImg = document.createElement('img')
-  const imgLink = document.createElement('a')
-  imgLink.href = game.game_url
-  cardImg.src = game.thumbnail
-  cardImg.classList.add('game-thumbnail')
-  cardImgDiv.classList.add('game-thumbnail-div')
-  const cardName = document.createElement('h4')
-  cardName.classList.add("card-title")
-  cardName.innerText = `${game.title}`
-  const gameInfo = document.createElement('div')
-  gameInfo.classList.add('gameInfo')
-  gameInfo.innerHTML = `
-  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
-  <p><b>Release Date:</b> ${game.release_date}</p>
-  <h5 class= "description"></b>Description:</b></h5>
-  <p>"${game.short_description}"</p>
-  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
-  `
-  cardImgDiv.appendChild(imgLink)
-  imgLink.appendChild(cardImg)
-  mainCard.appendChild(cardImgDiv)
+  mainCard.style.marginBottom = "10px"
   favBtn(mainCard, game, postFavoriteGame)
-  mainCard.appendChild(gameInfo)
-  mainCard.appendChild(cardName)
-  
+  renderGameInfo(mainCard, game)
   mainDiv().appendChild(mainCard)
 }
-// FAVORITE CARDS RENDER----------------------------------------------------
 
+// FAVORITE CARDS RENDER----------------------------------------------------
 function renderFavGameCard(game){
   const mainCard = document.createElement('div')
   mainCard.classList.add('mainCardDiv')
   mainCard.setAttribute('id',`${game.id}`)
   mainCard.style.marginBottom = "10px"
-  
-  const cardImgDiv = document.createElement('div')
-  const cardImg = document.createElement('img')
-  const imgLink = document.createElement('a')
-  imgLink.href = game.game_url
-  cardImg.src = game.thumbnail
-  cardImg.classList.add('game-thumbnail')
-  cardImgDiv.classList.add('game-thumbnail-div')
-  
-  const cardName = document.createElement('h4')
-  cardName.classList.add("card-title")
-  cardName.innerText = `${game.title}`
-  
-  const gameInfo = document.createElement('div')
-  gameInfo.classList.add('gameInfo')
-  gameInfo.innerHTML = `
-  <p><b>Platform:</b> ${game.platform} | <b>Genre:</b> ${game.genre}</p>
-  <p><b>Release Date:</b> ${game.release_date}</p>
-  <h5 class= "description"></b>Description:</b></h5>
-  <p>"${game.short_description}"</p>
-  <p><b>Developer:</b> ${game.developer} | <b>Publisher:</b> ${game.publisher}</p>
-  `
+  deleteBtn(mainCard, game, deleteFavGame)
+  renderGameInfo(mainCard, game)
+  mainDiv().appendChild(mainCard)
+}
+
+// Buttons and errors =====================================================================
+const deleteBtn = (append, game, callBack) => {
   const btn = document.createElement("button")
   btn.classList.add("btn", "waves-effect", "waves-light")
   btn.setAttribute("type", "submit")
@@ -374,26 +293,9 @@ function renderFavGameCard(game){
   btn.style.marginTop = "15px"
   btn.style.marginRight = '20px'
   btn.style.backgroundColor = "#f44336"
-  
-  btn.addEventListener("click", () => deleteGame(game.id))
-  
-  cardImgDiv.appendChild(imgLink)
-  imgLink.appendChild(cardImg)
-  mainCard.appendChild(cardImgDiv)
-  mainCard.appendChild(btn)
-  mainCard.appendChild(gameInfo)
-  mainCard.appendChild(cardName)
-  
-  mainDiv().appendChild(mainCard)
+  btn.addEventListener("click", () => callBack(game.id))
+  append.appendChild(btn)
 }
-
-const deleteGame = game => {
-  deleteFavGame(game)
-} 
-
-// Buttons and errors =====================================================================
-
-
 const favBtn = (append, game, callBack) => {
   const btn = document.createElement("button")
   btn.classList.add("btn", "waves-effect", "waves-light")
